@@ -332,7 +332,7 @@ This project demonstrates practical experience with:
 
 Computer Engineering (Artificial Intelligence & Machine Learning)
 
-Full Stack Developer | Backend Developer | Data Analytics Enthusiast
+Full Stack Developer | Backend Developer | BI Analytics Enthusiast
 
 ---
 
