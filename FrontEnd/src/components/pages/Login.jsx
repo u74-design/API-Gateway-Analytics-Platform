@@ -30,7 +30,7 @@ const Login = () => {
                 "user",
                 JSON.stringify(res.data.user)
             )
-            Navigate('/dashboard');
+            Navigate('/user-dashboard');
         } catch (err) {
             setError(err.response?.data?.message || "Login Failed!");
         } finally {
