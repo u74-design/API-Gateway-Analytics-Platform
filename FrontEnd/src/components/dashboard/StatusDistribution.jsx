@@ -6,15 +6,20 @@ import {
   Tooltip,
 } from "recharts";
 
-const data = [
-  { name: "2xx Success", value: 72 },
-  { name: "4xx Client", value: 18 },
-  { name: "5xx Server", value: 10 },
-];
+
 
 const COLORS = ["#22C55E", "#F59E0B", "#EF4444"];
 
-const StatusDistribution = () => {
+const StatusDistribution = ({ data }) => {
+  if (!data || data.length === 0) {
+    return (
+      <div className="rounded-2xl border border-white/10 bg-[#111113] p-6 flex items-center justify-center h-[300px]">
+        <p className="text-gray-500">
+          No status data available.
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="rounded-2xl border border-white/10 bg-[#111113] p-6">
 
@@ -43,17 +48,20 @@ const StatusDistribution = () => {
             >
               {data.map((entry, index) => (
                 <Cell
-                  key={index}
-                  fill={COLORS[index]}
+                  key={entry.name}
+                  fill={COLORS[index % COLORS.length]}
                 />
               ))}
             </Pie>
 
             <Tooltip
+              cursor={false}
+              formatter={(value) => [`${value} Requests`, "Count"]}
               contentStyle={{
                 background: "#18181B",
                 border: "1px solid rgba(255,255,255,.08)",
                 borderRadius: "12px",
+                color: "#fff",
               }}
             />
 

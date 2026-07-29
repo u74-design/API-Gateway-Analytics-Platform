@@ -8,17 +8,30 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const data = [
-  { day: "Jul 21", requests: 300 },
-  { day: "Jul 22", requests: 305 },
-  { day: "Jul 23", requests: 280 },
-  { day: "Jul 24", requests: 275 },
-  { day: "Jul 25", requests: 278 },
-  { day: "Jul 26", requests: 270 },
-  { day: "Jul 27", requests: 40 },
-];
+// const data = [
+//   { day: "Jul 21", requests: 300 },
+//   { day: "Jul 22", requests: 305 },
+//   { day: "Jul 23", requests: 280 },
+//   { day: "Jul 24", requests: 275 },
+//   { day: "Jul 25", requests: 278 },
+//   { day: "Jul 26", requests: 270 },
+//   { day: "Jul 27", requests: 40 },
+// ];
 
-const RequestsChart = () => {
+const RequestsChart = ({ data }) => {
+  if (!data || data.length === 0) {
+  return (
+    <div className="mt-8 rounded-2xl border border-white/10 bg-[#111113] p-6">
+      <h2 className="text-lg font-semibold text-white">
+        Requests Over Time
+      </h2>
+
+      <div className="flex h-[250px] items-center justify-center text-gray-500">
+        No request data available.
+      </div>
+    </div>
+  );
+}
   return (
     <div className="mt-8 rounded-2xl border border-white/10 bg-[#111113] p-6">
 
@@ -71,7 +84,13 @@ const RequestsChart = () => {
             />
 
             <XAxis
-              dataKey="day"
+              dataKey="date"
+              tickFormatter={(date) =>
+                new Date(date).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                })
+              }
               tick={{ fill: "#A1A1AA", fontSize: 13 }}
               axisLine={false}
               tickLine={false}
@@ -84,6 +103,14 @@ const RequestsChart = () => {
             />
 
             <Tooltip
+              cursor={false}
+              labelFormatter={(date) =>
+                new Date(date).toLocaleDateString("en-US", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                })
+              }
               contentStyle={{
                 background: "#18181B",
                 border: "1px solid rgba(255,255,255,.08)",
@@ -98,6 +125,14 @@ const RequestsChart = () => {
               stroke="#6366F1"
               strokeWidth={3}
               fill="url(#requestsGradient)"
+              dot={{
+                fill: "#6366F1",
+                r: 3,
+              }}
+              activeDot={{
+                r: 5,
+                fill: "#6366F1",
+              }}
             />
 
           </AreaChart>

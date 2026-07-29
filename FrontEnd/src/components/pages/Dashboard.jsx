@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import DashboardHeader from "../dashboard/DashboardHeader"
 import RecentActivityTable from "../dashboard/RecentActivityTable";
 import RequestsChart from "../dashboard/RequestsChart";
@@ -6,8 +7,33 @@ import StatusDistribution from "../dashboard/StatusDistribution";
 import TopApisChart from "../dashboard/TopApisChart";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/SideBar";
+import { GetDashboardStats, GetRequestsOverTime , GetStatusDistribution} from "../services/api";
 
 const Dashboard = () => {
+    const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [requestData, setRequestData] = useState([]);
+    const [statusData, setStatusData] = useState([]); 
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const data = await GetDashboardStats();
+                setStats(data.stats);
+                const chart = await GetRequestsOverTime();
+                setRequestData(chart.requests);
+                const status = await GetStatusDistribution();
+                console.log(status.statusDistribution);
+                setStatusData(status. statusDistribution);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchDashboardData();
+    }, [])
+
     return (
         <div className="min-h-screen bg-[#09090B] text-white">
 
@@ -15,18 +41,28 @@ const Dashboard = () => {
 
             <main className="ml-72">
 
-                <Navbar/>
+                <Navbar />
 
                 <div className="p-6">
 
                     <DashboardHeader />
 
-                    <StatsGrid />
+                    {
+                        loading ?
+                            <p className="text-gray-400">
+                                Loading...
+                            </p>
 
-                    <RequestsChart />
+
+                            :
+
+                            <StatsGrid stats={stats} />
+                    }
+
+                    <RequestsChart data={requestData} />
 
                     <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <StatusDistribution />
+                        <StatusDistribution  data={statusData}/>
                         <TopApisChart />
                     </div>
 

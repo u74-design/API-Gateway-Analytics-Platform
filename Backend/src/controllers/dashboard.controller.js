@@ -52,4 +52,95 @@ const GetDashboardStats = async (req, res) => {
     }
 };
 
-export { GetDashboardStats };
+
+const GetRequestsOverTime = async (req, res) => {
+    try {
+
+        const userId = req.user._id;
+
+        const logs = await Analytics.find({ owner: userId })
+            .sort({ createdAt: 1 });
+
+        const grouped = {};
+
+        logs.forEach((log) => {
+
+            const date = log.createdAt.toISOString().split("T")[0];
+
+            grouped[date] = (grouped[date] || 0) + 1;
+
+        });
+
+        const result = Object.keys(grouped).map((date) => ({
+            date,
+            requests: grouped[date]
+        }));
+
+        return res.status(200).json({
+            success: true,
+            requests: result
+        });
+
+    } catch (err) {
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to fetch requests over time"
+        });
+
+    }
+};
+
+
+const GetStatusDistribution = async (req, res) => {
+    try {
+
+        const userId = req.user._id;
+
+        const logs = await Analytics.find({ owner: userId });
+
+        let success = 0;
+        let client = 0;
+        let server = 0;
+
+        logs.forEach((log) => {
+
+            if (log.statusCode >= 200 && log.statusCode < 300) {
+                success++;
+            } else if (log.statusCode >= 400 && log.statusCode < 500) {
+                client++;
+            } else if (log.statusCode >= 500) {
+                server++;
+            }
+
+        });
+
+        return res.status(200).json({
+            success: true,
+            statusDistribution: [
+                {
+                    name: "2xx Success",
+                    value: success,
+                },
+                {
+                    name: "4xx Client",
+                    value: client,
+                },
+                {
+                    name: "5xx Server",
+                    value: server,
+                },
+            ],
+        });
+
+    } catch (err) {
+
+        return res.status(500).json({
+            success: false,
+            message: "Unable to fetch status distribution",
+        });
+
+    }
+};
+
+export { GetDashboardStats ,  GetRequestsOverTime, GetStatusDistribution};

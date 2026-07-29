@@ -40,4 +40,19 @@ api.interceptors.response.use(
   }
 );
 
+
+export const GetDashboardStats = async () => {
+    const response  = await api.get("/dashboard/stats");
+    return  response.data;
+}
+
+export const GetRequestsOverTime = async () => {
+    const response = await api.get("/dashboard/requests-over-time");
+    return response.data;
+};
+
+export const GetStatusDistribution = async () => {
+  const response = await api.get("/dashboard/status-distribution");
+  return  response.data;
+}
 export default api;
