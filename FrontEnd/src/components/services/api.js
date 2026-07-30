@@ -1,58 +1,71 @@
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:5000/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-api.interceptors.request.use(
-  (config) => {
-
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-
-  },
-  (error) => Promise.reject(error)
-);
-
-api.interceptors.response.use(
-  (response) => response,
-
-  (error) => {
-
-    if (error.response?.status === 401) {
-
-      localStorage.removeItem("token");
-
-      localStorage.removeItem("user");
-
-      window.location.href = "/";
-    }
-
-    return Promise.reject(error);
-  }
-);
+ import axios from "axios";
 
 
-export const GetDashboardStats = async () => {
-    const response  = await api.get("/dashboard/stats");
-    return  response.data;
-}
+ const api = axios.create({
+   baseURL: "http://localhost:5000/api",
+   headers: {
+     "Content-Type": "application/json",
+   },
+ });
 
-export const GetRequestsOverTime = async () => {
-    const response = await api.get("/dashboard/requests-over-time");
+ api.interceptors.request.use(
+   (config) => {
+
+     const token = localStorage.getItem("token");
+
+     if (token) {
+       config.headers.Authorization = `Bearer ${token}`;
+     }
+
+     return config;
+
+   },
+   (error) => Promise.reject(error)
+ );
+ api.interceptors.response.use(
+   (response) => response,
+
+   (error) => {
+
+     if (error.response?.status === 401) {
+
+       localStorage.removeItem("token");
+
+       localStorage.removeItem("user");
+
+       window.location.href = "/";
+     }
+
+     return Promise.reject(error);
+   }
+ );
+
+
+    export const GetDashboardStats = async () => {
+     const response  = await api.get("/dashboard/stats");
+     return  response.data;
+ }
+
+ export const GetRequestsOverTime = async () => {
+     const response = await api.get("/dashboard/requests-over-time");
+     return response.data;
+ };
+
+ export const GetStatusDistribution = async () => {
+   const response = await api.get("/dashboard/status-distribution");   return  response.data;
+ }
+
+ export const GetTopApis = async () => {
+        const response = await api.get("/dashboard/top-apis");
+        return response.data;
+ }
+
+ export const GetRecentActivity = async () => {
+    const response = await api.get("/dashboard/recent-activity");
     return response.data;
 };
 
-export const GetStatusDistribution = async () => {
-  const response = await api.get("/dashboard/status-distribution");
-  return  response.data;
-}
-export default api;
+ export default api;
+
+
+

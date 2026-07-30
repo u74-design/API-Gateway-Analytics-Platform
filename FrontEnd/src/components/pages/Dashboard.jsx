@@ -7,13 +7,15 @@ import StatusDistribution from "../dashboard/StatusDistribution";
 import TopApisChart from "../dashboard/TopApisChart";
 import Navbar from "../layout/Navbar";
 import Sidebar from "../layout/SideBar";
-import { GetDashboardStats, GetRequestsOverTime , GetStatusDistribution} from "../services/api";
+import { GetDashboardStats, GetRequestsOverTime , GetStatusDistribution, GetTopApis, GetRecentActivity} from "../services/api";
 
 const Dashboard = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [requestData, setRequestData] = useState([]);
     const [statusData, setStatusData] = useState([]); 
+    const [topApis, setTopApis] = useState([]);
+    const [activities, setActivities] = useState([]);
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -22,8 +24,12 @@ const Dashboard = () => {
                 const chart = await GetRequestsOverTime();
                 setRequestData(chart.requests);
                 const status = await GetStatusDistribution();
-                console.log(status.statusDistribution);
                 setStatusData(status. statusDistribution);
+                const apis = await GetTopApis();
+                setTopApis(apis.topApis);
+                const activities = await GetRecentActivity();
+                console.log(activities);
+                setActivities(activities.activities);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -63,10 +69,10 @@ const Dashboard = () => {
 
                     <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <StatusDistribution  data={statusData}/>
-                        <TopApisChart />
+                        <TopApisChart  data={topApis}/>
                     </div>
 
-                    <RecentActivityTable />
+                    <RecentActivityTable activities={activities} />
 
                 </div>
 

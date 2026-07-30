@@ -7,26 +7,16 @@ import {
     Tooltip,
 } from "recharts";
 
-const data = [
-    {
-        api: "Users",
-        requests: 980,
-    },
-    {
-        api: "Orders",
-        requests: 720,
-    },
-    {
-        api: "Payments",
-        requests: 510,
-    },
-    {
-        api: "Products",
-        requests: 390,
-    },
-];
-
-const TopApisChart = () => {
+const TopApisChart = ({ data }) => {
+    if (!data || data.length === 0) {
+        return (
+            <div className="rounded-2xl border border-white/10 bg-[#111113] p-6 flex items-center justify-center h-[250px]">
+                <p className="text-gray-500">
+                    No API traffic available.
+                </p>
+            </div>
+        );
+    }
     return (
         <div className="rounded-2xl border border-white/10 bg-[#111113] p-4">
 
@@ -45,6 +35,12 @@ const TopApisChart = () => {
                     <BarChart
                         layout="vertical"
                         data={data}
+                        margin={{
+                            left: 30,
+                            right: 10,
+                            top: 0,
+                            bottom: 0,
+                        }}
                     >
 
                         <XAxis
@@ -55,17 +51,16 @@ const TopApisChart = () => {
                         <YAxis
                             dataKey="api"
                             type="category"
-                            width={100}
-                            tickMargin={8}
+                            width={90}
                             tick={{
                                 fill: "#A1A1AA",
-                                fontSize: 14,
+                                fontSize: 13,
                             }}
                             axisLine={false}
                             tickLine={false}
                         />
                         <Tooltip
-                        cursor={false}
+                            cursor={false}
                             contentStyle={{
                                 background: "#18181B",
                                 border: "1px solid rgba(255,255,255,.08)",
