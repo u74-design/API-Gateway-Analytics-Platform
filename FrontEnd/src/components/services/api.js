@@ -65,7 +65,33 @@
     return response.data;
 };
 
- export default api;
+export const DeleteApi = async (id) => {
+      const reponse = await  api.delete(`/apis/${id}`);
+      return response.data;
+}
+
+export const CreateApi = async (data) => {
+    const response = await api.post("/apis/register", data);
+    return response.data;
+};
+
+export const GetMyApis = async () => {
+    const response = await api.get("/apis/my-apis");
+    return response.data;
+};
+
+export const RegenerateApiKey = async (id) => {
+    const response = await api.patch(`/apis/${id}/regenerate`);
+    return response.data;
+};
+
+export const UpdateApi = async (id, data) => {
+    const response = await api.put(`/apis/${id}`, data);
+    return response.data;
+};
+
+
+export default api;
 
 
 

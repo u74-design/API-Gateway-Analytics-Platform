@@ -8,10 +8,9 @@ const ApiSchema = new mongoose.Schema(
             trim: true
         },
 
-        originalUrl: {
+        targetUrl: {
             type: String,
             required: true,
-            trim: true
         },
 
         rateLimit: {
@@ -23,7 +22,15 @@ const ApiSchema = new mongoose.Schema(
             type: String,
             default: "1m"
         },
+        cacheEnabled: {
+            type: Boolean,
+            default: true,
+        },
 
+        cacheTTL: {
+            type: Number,
+            default: 300,
+        },
         proxyId: {
             type: String,
             required: true,

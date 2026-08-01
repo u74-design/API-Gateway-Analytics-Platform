@@ -19,7 +19,7 @@ const Sidebar = () => {
     {
       title: "My APIs",
       icon: PlugZap,
-      path: "/apis",
+      path: "/my-apis",
     },
     {
       title: "Analytics",
@@ -84,9 +84,6 @@ const Sidebar = () => {
         })}
 
       </nav>
-
-      {/* User */}
-
     </aside>
   );
 };

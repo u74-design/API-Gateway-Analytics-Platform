@@ -2,9 +2,9 @@ import Api from "../models/api.model.js";
 import crypto from "crypto";
 const RegisterApi = async (req, res) => {
     try {
-        const { name, originalUrl, rateLimit, window } = req.body;
+        const { name, targetUrl, rateLimit, window, cacheEnabled, cacheTTL } = req.body;
 
-        if (!name || !originalUrl || !rateLimit) {
+        if (!name || !targetUrl || !rateLimit) {
             return res.status(400).json({
                 message: "Name, originalUrl and rateLimit are required",
                 success: false
@@ -15,7 +15,9 @@ const RegisterApi = async (req, res) => {
         const apiKey = `sk_live_${crypto.randomBytes(24).toString("hex")}`;
         const api = await Api.create({
             name,
-            originalUrl,
+            targetUrl,
+            cacheEnabled,
+            cacheTTL,
             rateLimit,
             window: window || "1m",
             proxyId,
@@ -29,10 +31,12 @@ const RegisterApi = async (req, res) => {
             api: {
                 id: api._id,
                 name: api.name,
-                originalUrl: api.originalUrl,
+                targetUrl: api.targetUrl,
                 rateLimit: api.rateLimit,
                 window: api.window,
-                proxyId: api.proxyId,
+                cacheEnabled: api.cacheEnabled,
+                cacheTTL: api.cacheTTL,
+                proxyUrl: `${process.env.BASE_URL}/proxy/${api.proxyId}`,
                 apiKey: api.apiKey
             }
         });
