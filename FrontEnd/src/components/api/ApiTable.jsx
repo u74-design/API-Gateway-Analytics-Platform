@@ -4,7 +4,6 @@ const ApiTable = ({
   apis,
   onView,
   onDelete,
-  onRegenerate,
 }) => {
   if (!apis || apis.length === 0) {
     return (
@@ -58,7 +57,6 @@ const ApiTable = ({
               api={api}
               onView={onView}
               onDelete={onDelete}
-              onRegenerate={onRegenerate}
             />
           ))}
 

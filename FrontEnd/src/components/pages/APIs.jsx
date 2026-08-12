@@ -5,6 +5,7 @@ import ApiTable from "../api/ApiTable";
 import ApiModal from "../api/ApiModal";
 import DeleteModal from "../api/DeleteModal";
 import { GetMyApis } from "../services/api";
+import ViewApiModal from "../api/ViewApiModel";
 const ApiDashboard = () => {
     const [apis, setApis] = useState([]);
 
@@ -15,6 +16,8 @@ const ApiDashboard = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
 
     const [selectedApi, setSelectedApi] = useState(null);
+
+    const [viewOpen, setViewOpen] = useState(false);
 
     const fetchApis = async () => {
         try {
@@ -79,9 +82,19 @@ const ApiDashboard = () => {
 
                             <ApiTable
                                 apis={apis}
+
+                                onView={(api) => {
+                                    setSelectedApi(api);
+                                    setViewOpen(true);
+                                }}
+
                                 onDelete={(api) => {
                                     setSelectedApi(api);
                                     setDeleteOpen(true);
+                                }}
+
+                                onRegenerate={(api) => {
+                                    console.log("Regenerate:", api);
                                 }}
                             />
                     }
@@ -94,6 +107,12 @@ const ApiDashboard = () => {
                 open={createOpen}
                 onClose={() => setCreateOpen(false)}
                 onSuccess={fetchApis}
+            />
+
+            <ViewApiModal
+                open={viewOpen}
+                api={selectedApi}
+                onClose={() => setViewOpen(false)}
             />
 
             <DeleteModal

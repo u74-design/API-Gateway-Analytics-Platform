@@ -9,7 +9,6 @@ import {
 const ApiMenu = ({
   api,
   onView,
-  onRegenerate,
   onDelete,
 }) => {
   const [open, setOpen] = useState(false);
@@ -66,17 +65,6 @@ const ApiMenu = ({
           >
             <Eye size={18} />
             View Details
-          </button>
-
-          <button
-            onClick={() => {
-              setOpen(false);
-              onRegenerate(api);
-            }}
-            className="flex w-full items-center gap-3 px-4 py-3 text-white hover:bg-white/5 transition"
-          >
-            <RefreshCw size={18} />
-            Regenerate Key
           </button>
 
           <button

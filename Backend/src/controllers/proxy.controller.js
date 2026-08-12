@@ -98,7 +98,7 @@ const handleProxyRequest = async (req, res) => {
         // 3. Call original API
         const startTime = Date.now();
 
-        const response = await axios.get(api.originalUrl);
+        const response = await axios.get(api.targetUrl);
 
         const endTime = Date.now();
         const apiLatency = endTime - startTime;

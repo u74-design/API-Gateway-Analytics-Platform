@@ -66,9 +66,9 @@
 };
 
 export const DeleteApi = async (id) => {
-      const reponse = await  api.delete(`/apis/${id}`);
-      return response.data;
-}
+    const response = await api.delete(`/apis/${id}`);
+    return response.data;
+};
 
 export const CreateApi = async (data) => {
     const response = await api.post("/apis/register", data);

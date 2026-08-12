@@ -3,6 +3,7 @@ import {Routes, Route} from "react-router-dom";
 import Register from "./components/pages/Register";
 import Dashboard from "./components/pages/Dashboard";
 import ApiDashboard from "./components/pages/APIs";
+
 const app = () => {
   return (
     <Routes>
