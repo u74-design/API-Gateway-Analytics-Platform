@@ -3,7 +3,6 @@ import {
   PlugZap,
   BarChart3,
   User,
-  Settings,
   LogOut,
 } from "lucide-react";
 
@@ -30,11 +29,6 @@ const Sidebar = () => {
       title: "Profile",
       icon: User,
       path: "/profile",
-    },
-    {
-      title: "Settings",
-      icon: Settings,
-      path: "/settings",
     },
   ];
 

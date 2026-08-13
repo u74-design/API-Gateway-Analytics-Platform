@@ -156,10 +156,9 @@ const GetTopApis = async (req, res) => {
 
         analytics.forEach((log) => {
 
-            if (!log.api) return;
+            if (!log.apiId) return;
 
             const apiName = log.apiId.name;
-s
             apiTraffic[apiName] = (apiTraffic[apiName] || 0) + 1;
 
         });

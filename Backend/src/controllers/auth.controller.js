@@ -105,11 +105,25 @@ const LoginUser = async (req, res) => {
 }
 
 const GetProfile = async (req, res) => {
-    return res.status(200).json({
-        message: "Profile fetched successfully",
-        success: true,
-        user: req.user
-    });
-}
+    try {
+        return res.status(200).json({
+            message: "Profile fetched successfully",
+            success: true,
+            user: {
+                id: req.user._id,
+                name: req.user.name,
+                email: req.user.email,
+                createdAt: req.user.createdAt
+            }
+        });
+    } catch (err) {
+        console.error("Error fetching profile:", err);
+
+        return res.status(500).json({
+            message: "Error fetching profile",
+            success: false
+        });
+    }
+};
 
 export { RegisterUser, LoginUser, GetProfile };
