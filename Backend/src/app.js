@@ -7,12 +7,14 @@ import analyticsRoutes from "./routes/analytics.route.js";
 import dashboardRoutes from "./routes/dashboard.route.js";
 const app = express();
 
-app.use(
-    cors({
-        origin: true,
-        credentials: true,
-    })
-);
+app.use(cors({
+    origin: [
+        "http://localhost:5173",
+        "https://api-gateway-analytics-platform.vercel.app"
+    ],
+    credentials: true,
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use('/api/auth',authRoutes);
