@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import Navbar from "../layout/Navbar";
-import Sidebar from "../layout/SideBar";
+import Sidebar from "../layout/Sidebar";
 
 import {
     GetProfile,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../layout/Navbar";
-import Sidebar from "../layout/SideBar";
+import Sidebar from "../layout/Sidebar";
 
 import {
     GetDashboardStats,

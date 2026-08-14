@@ -6,7 +6,7 @@ import StatsGrid from "../dashboard/StatsGrid"
 import StatusDistribution from "../dashboard/StatusDistribution";
 import TopApisChart from "../dashboard/TopApisChart";
 import Navbar from "../layout/Navbar";
-import Sidebar from "../layout/SideBar";
+import Sidebar from "../layout/Sidebar";
 import { GetDashboardStats, GetRequestsOverTime , GetStatusDistribution, GetTopApis, GetRecentActivity} from "../services/api";
 
 const Dashboard = () => {
