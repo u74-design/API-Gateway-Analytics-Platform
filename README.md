@@ -8,7 +8,7 @@
 
 
 🌐 Live Demo
-Frontend: https://api-gateway-analytics-platform.vercel.app
+Frontend: 
 Backend API: https://api-gateway-analytics-platform.onrender.com
 
 **A production-inspired API Gateway built with Node.js, Express, MongoDB Atlas, Upstash Redis, and React that enables developers to securely expose APIs through proxy endpoints while providing authentication, caching, rate limiting, and real-time analytics.**
