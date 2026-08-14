@@ -21,5 +21,4 @@ app.use("/api/dashboard", dashboardRoutes);
 app.get('/',(req,res)=>{
     res.send("API Gateway Running in backend");
 })
-
 export default app;

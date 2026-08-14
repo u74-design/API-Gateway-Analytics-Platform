@@ -95,6 +95,14 @@ export const GetProfile = async () => {
     return response.data;
 };
 
+export const ChangePassword = async (data) => {
+    const response = await api.patch(
+        "/auth/change-password",
+        data
+    );
+
+    return response.data;
+};
 export default api;
 
 

@@ -126,4 +126,90 @@ const GetProfile = async (req, res) => {
     }
 };
 
-export { RegisterUser, LoginUser, GetProfile };
+const changepassword = async (req,res) => {
+    try{
+        const userId = req.user._id;
+
+        const {
+            currentPassword,
+            newPassword,
+            confirmPassword
+        } = req.body;
+
+        if(!currentPassword || !newPassword || !confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            });                                             
+        }
+
+        if(newPassword !== confirmPassword){
+            return res.status(400).json({
+                success : false,
+                message : "New passwords do not match",
+            });
+        }
+
+        const passwordRegex =  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+        if(!passwordRegex.test(newPassword)){
+            return res.status(400).json({
+                success: false,
+                message : "Password must contain at least one letter, one number, one special character, and be at least 8 characters long"
+            })
+        }
+
+        const user = await User.findById(userId);
+
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                message : "User not found"
+            })
+        }
+
+         const isCurrentPasswordCorrect = await bcrypt.compare(
+            currentPassword,
+            user.password
+        );
+
+        if (!isCurrentPasswordCorrect) {
+            return res.status(401).json({
+                success: false,
+                message: "Current password is incorrect"
+            });
+        }
+
+        const isSamePassword = await bcrypt.compare(
+            newPassword,
+            user.password
+        );
+
+        if (isSamePassword) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "New password must be different from current password"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        user.password = hashedPassword;
+
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Password changed successfully"
+        });
+    }catch(err){
+        console.error("Change password error:", err);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+}
+export { RegisterUser, LoginUser, GetProfile , changepassword};

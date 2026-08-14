@@ -42,10 +42,6 @@ const RequestsChart = ({ data }) => {
             Requests Over Time
           </h2>
         </div>
-
-        <span className="rounded-lg bg-indigo-600/20 px-2 py-2 text-sm font-medium text-indigo-400">
-          Last 7 Days
-        </span>
       </div>
 
       {/* Chart */}

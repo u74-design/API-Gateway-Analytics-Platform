@@ -65,57 +65,6 @@ const Navbar = () => {
 
             <div className="flex items-center gap-4">
 
-                {/* Theme */}
-
-                <button
-                    className="
-                    rounded-xl
-                    border
-                    border-white/10
-                    p-2.5
-                    text-gray-400
-                    transition
-                    hover:border-indigo-500
-                    hover:text-white
-                    "
-                >
-                    <Moon size={18} />
-                </button>
-
-
-                {/* Notifications */}
-
-                <button
-                    className="
-                    relative
-                    rounded-xl
-                    border
-                    border-white/10
-                    p-2.5
-                    text-gray-400
-                    transition
-                    hover:border-indigo-500
-                    hover:text-white
-                    "
-                >
-                    <Bell size={18} />
-
-                    <span
-                        className="
-                        absolute
-                        right-2
-                        top-2
-                        h-2
-                        w-2
-                        rounded-full
-                        bg-red-500
-                        "
-                    />
-                </button>
-
-
-                {/* User Dropdown */}
-
                 <div className="relative">
 
                     {/* User Button */}

@@ -1,37 +1,4 @@
-// const activities = [
-//   {
-//     api: "Users API",
-//     method: "GET",
-//     status: 200,
-//     latency: "52ms",
-//     cache: "HIT",
-//     time: "2 min ago",
-//   },
-//   {
-//     api: "Orders API",
-//     method: "POST",
-//     status: 201,
-//     latency: "84ms",
-//     cache: "MISS",
-//     time: "5 min ago",
-//   },
-//   {
-//     api: "Payments API",
-//     method: "POST",
-//     status: 500,
-//     latency: "182ms",
-//     cache: "MISS",
-//     time: "8 min ago",
-//   },
-//   {
-//     api: "Products API",
-//     method: "GET",
-//     status: 304,
-//     latency: "41ms",
-//     cache: "HIT",
-//     time: "12 min ago",
-//   },
-// ];
+import { useNavigate } from "react-router-dom";
 
 const getStatusColor = (status) => {
   if (status >= 200 && status < 300)
@@ -66,7 +33,7 @@ const getMethodColor = (method) => {
 };
 
 const RecentActivityTable = ({activities=[]}) => {
-
+  const navigate = useNavigate();
   return (
     <div className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-[#111113]">
 
@@ -84,7 +51,9 @@ const RecentActivityTable = ({activities=[]}) => {
           </p>
         </div>
 
-        <button className="text-sm font-medium text-indigo-400 transition hover:text-indigo-300">
+        <button 
+        onClick={()=>navigate('/analytics')}
+        className="text-sm font-medium text-indigo-400 transition hover:text-indigo-300">
           View All
         </button>
 

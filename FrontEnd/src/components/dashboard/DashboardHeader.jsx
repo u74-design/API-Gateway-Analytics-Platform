@@ -11,21 +11,6 @@ const DashboardHeader = () => {
           Live traffic across all your registered APIs.
         </p>
       </div>
-
-      {/* Right */}
-      <div className="flex items-center rounded-xl border border-white/10 bg-[#121216] p-1">
-        <button className="px-5 py-2 rounded-lg text-gray-400 hover:text-white transition">
-          24h
-        </button>
-
-        <button className="px-5 py-2 rounded-lg bg-indigo-600 text-white font-medium">
-          7d
-        </button>
-
-        <button className="px-5 py-2 rounded-lg text-gray-400 hover:text-white transition">
-          30d
-        </button>
-      </div>
     </div>
   );
 };
