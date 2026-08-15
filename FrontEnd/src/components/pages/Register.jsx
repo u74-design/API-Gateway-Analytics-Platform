@@ -31,8 +31,6 @@ const Register = () => {
                 password
             });
 
-            console.log("Register response:", res.data);
-
             if (!res.data.success) {
                 setError(
                     res.data.message || "Registration failed."
