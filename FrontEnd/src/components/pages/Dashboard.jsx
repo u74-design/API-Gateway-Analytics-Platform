@@ -28,7 +28,6 @@ const Dashboard = () => {
                 const apis = await GetTopApis();
                 setTopApis(apis.topApis);
                 const activities = await GetRecentActivity();
-                console.log(activities);
                 setActivities(activities.activities);
             } catch (err) {
                 console.log(err);

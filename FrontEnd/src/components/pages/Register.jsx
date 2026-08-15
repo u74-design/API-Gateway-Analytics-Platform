@@ -55,11 +55,6 @@ const Register = () => {
             setSuccess(
                 res.data.message || "User registered successfully"
             );
-
-            console.log("TOKEN:", localStorage.getItem("token"));
-            console.log("USER:", localStorage.getItem("user"));
-
-            console.log("NAVIGATING TO DASHBOARD");
             // Navigate to dashboard
             navigate("/user-dashboard");
 
