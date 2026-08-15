@@ -13,33 +13,75 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const Navigate = useNavigate();
+    const [success, setSuccess] = useState("");
+
+    const navigate = useNavigate();
 
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
         setLoading(true);
         setError("");
+        setSuccess("")
         try {
             const res = await api.post("/auth/register", {
                 name,
                 email,
                 password
             });
+
+            console.log("Register response:", res.data);
+
+            if (!res.data.success) {
+                setError(
+                    res.data.message || "Registration failed."
+                );
+                return;
+            }
+
+            // Store JWT
+            localStorage.setItem(
+                "token",
+                res.data.token
+            );
+
+            // Store user
             localStorage.setItem(
                 "user",
                 JSON.stringify(res.data.user)
-            )
-            Navigate('/user-dashboard');
+            );
+
+            setSuccess(
+                res.data.message || "User registered successfully"
+            );
+
+            console.log("TOKEN:", localStorage.getItem("token"));
+            console.log("USER:", localStorage.getItem("user"));
+
+            console.log("NAVIGATING TO DASHBOARD");
+            // Navigate to dashboard
+            navigate("/user-dashboard");
+
         } catch (err) {
-            setError(err.response?.data?.message || "Login Failed!");
+
+            console.error(
+                "Registration error:",
+                err
+            );
+
+            setError(
+                err.response?.data?.message ||
+                "Registration failed."
+            );
+
         } finally {
             setLoading(false);
         }
-    }
+    };
     return (
         <div className="min-h-screen bg-[#09090B] grid lg:grid-cols-2">
-            <AuthHero/>
+            <AuthHero />
 
             <div className="flex items-center justify-center px-8">
                 <RegisterForm
@@ -51,6 +93,7 @@ const Register = () => {
                     setPassword={setPassword}
                     loading={loading}
                     error={error}
+                    success={success}
                     handleRegister={handleRegister}
                 />
             </div>

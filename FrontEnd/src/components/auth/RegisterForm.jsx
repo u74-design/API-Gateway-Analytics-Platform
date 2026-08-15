@@ -12,6 +12,7 @@ const RegisterForm = ({
   setPassword,
   loading,
   error,
+  success,
   handleRegister,
 }) => {
   return (
@@ -60,6 +61,12 @@ const RegisterForm = ({
         {error && (
           <p className="text-red-400 text-sm">
             {error}
+          </p>
+        )}
+
+        {success && (
+          <p className="text-green-400 text-sm">
+            {success}
           </p>
         )}
 

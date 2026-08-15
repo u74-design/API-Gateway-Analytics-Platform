@@ -54,7 +54,7 @@ const ApiMenu = ({
       {/* Dropdown */}
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-xl border border-white/10 bg-[#111113] shadow-2xl">
+        <div className="absolute right-0 bottom-full z-50 mb-2 w-52 overflow-hidden rounded-xl border border-white/10 bg-[#111113] shadow-2xl">
 
           <button
             onClick={() => {

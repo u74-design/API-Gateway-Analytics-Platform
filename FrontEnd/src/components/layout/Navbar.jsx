@@ -10,18 +10,31 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-
     const [openDropdown, setOpenDropdown] = useState(false);
 
     const navigate = useNavigate();
 
+    // Get user from localStorage safely
+    const getStoredUser = () => {
+        try {
+            const storedUser = localStorage.getItem("user");
 
-    // Get user from localStorage
-    const storedUser = localStorage.getItem("user");
+            if (!storedUser || storedUser === "undefined") {
+                return null;
+            }
 
-    const user = storedUser
-        ? JSON.parse(storedUser)
-        : null;
+            return JSON.parse(storedUser);
+        } catch (error) {
+            console.error("Invalid user data in localStorage:", error);
+
+            // Remove corrupted data
+            localStorage.removeItem("user");
+
+            return null;
+        }
+    };
+
+    const user = getStoredUser();
 
     const userName = user?.name || "User";
 
@@ -32,7 +45,6 @@ const Navbar = () => {
 
     // Logout
     const handleLogout = () => {
-
         localStorage.removeItem("token");
         localStorage.removeItem("user");
 
@@ -42,7 +54,6 @@ const Navbar = () => {
 
     // Profile
     const handleProfile = () => {
-
         setOpenDropdown(false);
 
         navigate("/profile");
@@ -64,6 +75,57 @@ const Navbar = () => {
             {/* Right */}
 
             <div className="flex items-center gap-4">
+
+                {/* Theme */}
+
+                <button
+                    className="
+                    rounded-xl
+                    border
+                    border-white/10
+                    p-2.5
+                    text-gray-400
+                    transition
+                    hover:border-indigo-500
+                    hover:text-white
+                    "
+                >
+                    <Moon size={18} />
+                </button>
+
+
+                {/* Notifications */}
+
+                <button
+                    className="
+                    relative
+                    rounded-xl
+                    border
+                    border-white/10
+                    p-2.5
+                    text-gray-400
+                    transition
+                    hover:border-indigo-500
+                    hover:text-white
+                    "
+                >
+                    <Bell size={18} />
+
+                    <span
+                        className="
+                        absolute
+                        right-2
+                        top-2
+                        h-2
+                        w-2
+                        rounded-full
+                        bg-red-500
+                        "
+                    />
+                </button>
+
+
+                {/* User */}
 
                 <div className="relative">
 
@@ -225,3 +287,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+

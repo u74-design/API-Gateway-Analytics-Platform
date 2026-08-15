@@ -6,7 +6,7 @@ import ApiDashboard from "./components/pages/APIs";
 import Analytics from "./components/pages/Analytics";
 import Profile from "./components/pages/Profile";
 
-const app = () => {
+const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Login/>}/>
@@ -19,4 +19,4 @@ const app = () => {
   )
 }
 
-export default app;
+export default App;

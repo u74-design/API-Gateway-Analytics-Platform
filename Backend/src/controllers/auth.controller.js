@@ -4,20 +4,26 @@ import jwt from 'jsonwebtoken';
 const RegisterUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        if (!name || !password || !email) {
+
+        // Validate fields
+        if (!name || !email || !password) {
             return res.status(400).json({
-                message: "All the fields are required!",
-                success: false
-            })
+                success: false,
+                message: "All fields are required!"
+            });
         }
 
+        // Check existing user
         const existingUser = await User.findOne({ email });
+
         if (existingUser) {
             return res.status(409).json({
-                message: "User already exists",
-                success: false
-            })
+                success: false,
+                message: "User already exists"
+            });
         }
+
+        // Password validation
         const passwordRegex =
             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
@@ -28,24 +34,50 @@ const RegisterUser = async (req, res) => {
                     "Password must contain at least one letter, one number, one special character, and be at least 8 characters long"
             });
         }
+
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create user
         const user = await User.create({
             name,
             email,
             password: hashedPassword
-        })
-        res.status(201).json({
-            message: "User registered successsfully",
-            successs: true
         });
+
+        // Create JWT
+        const token = jwt.sign(
+            {
+                userId: user._id
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+        return res.status(201).json({
+            success: true,
+            message: "Registration Successful!, please login",
+
+            token,
+
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+
     } catch (err) {
-        console.log(`Error in Register route working, ${err}`);
-        res.status(500).json({
-            message: `Internal Server Error,${err}`,
-            success: false
-        })
+        console.error("Register error:", err);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
     }
-}
+};
 
 const LoginUser = async (req, res) => {
     try {

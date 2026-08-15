@@ -28,7 +28,7 @@ const TopApisChart = ({ data }) => {
                 Highest requested endpoints.
             </p>
 
-            <div className="h-[250px] mt-6">
+            <div className="h-[50px] mt-6">
 
                 <ResponsiveContainer width="100%" height="100%">
 
@@ -51,7 +51,7 @@ const TopApisChart = ({ data }) => {
                         <YAxis
                             dataKey="api"
                             type="category"
-                            width={90}
+                            width={100}
                             tick={{
                                 fill: "#A1A1AA",
                                 fontSize: 13,
@@ -71,7 +71,7 @@ const TopApisChart = ({ data }) => {
                         <Bar
                             dataKey="requests"
                             fill="#6366F1"
-                            radius={[8, 8, 8, 8]}
+                            radius={[5, 8, 8, 8]}
                         />
 
                     </BarChart>

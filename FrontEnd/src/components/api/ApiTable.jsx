@@ -16,7 +16,7 @@ const ApiTable = ({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111113]">
+    <div className="overflow-visible rounded-2xl border border-white/10 bg-[#111113]">
       <table className="w-full">
 
         <thead className="border-b border-white/10 text-sm text-gray-500">
