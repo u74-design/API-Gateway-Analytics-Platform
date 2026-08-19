@@ -18,7 +18,7 @@ const ApiRow = ({
 
 
         <p className="mt-1 text-sm text-gray-500">
-          {api.originalUrl}
+          {api.targetUrl}
         </p>
 
       </td>
@@ -28,7 +28,7 @@ const ApiRow = ({
       <td className="px-6 py-5">
 
         <code className="text-sm text-gray-400">
-          http://localhost:5000/api/proxy/{api.proxyId}
+          {api.proxyUrl}
         </code>
 
       </td>

@@ -1,9 +1,6 @@
-import InputField from "../auth/InputField"
 import { useState } from "react"
-import PasswordInput from "../auth/PasswordInput"
 import { useNavigate } from "react-router-dom"
 import api from "../services/api";
-import { Link } from "lucide-react"
 import AuthHero from "../auth/AuthHero";
 import RegisterForm from "../auth/RegisterForm";
 

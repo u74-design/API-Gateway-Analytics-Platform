@@ -3,7 +3,6 @@ import {
   PlugZap,
   BarChart3,
   User,
-  LogOut,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";

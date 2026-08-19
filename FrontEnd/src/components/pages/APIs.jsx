@@ -19,13 +19,17 @@ const ApiDashboard = () => {
 
     const [viewOpen, setViewOpen] = useState(false);
 
-    const fetchApis = async () => {
+    const fetchApis = async (createdApi) => {
         try {
             setLoading(true);
 
             const data = await GetMyApis();
 
             setApis(data.apis);
+            if (createdApi) {
+                setSelectedApi({ ...createdApi, _id: createdApi.id });
+                setViewOpen(true);
+            }
 
         } catch (err) {
             console.log(err);

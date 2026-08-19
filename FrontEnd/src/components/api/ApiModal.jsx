@@ -40,11 +40,11 @@ const ApiModal = ({
     try {
       setLoading(true);
 
-      await CreateApi(form);
+      const result = await CreateApi(form);
 
       setForm(initialState);
 
-      onSuccess();
+      onSuccess(result.api);
 
       onClose();
 

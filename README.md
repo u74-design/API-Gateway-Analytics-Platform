@@ -1,341 +1,61 @@
-# 🚀 API Gateway & Analytics Platform
+# API Gateway Platform
 
-<div align="center">
+Users register a public upstream API and receive a proxy URL plus an API key. The gateway authenticates the request, applies a per-client rate limit, optionally caches safe `GET` responses, records analytics, and forwards the request to the upstream API.
 
+## What the proxy supports
 
-
-
-
-
-🌐 Live Demo
-Frontend: 
-Backend API: 
-
-**A production-inspired API Gateway built with Node.js, Express, MongoDB Atlas, Upstash Redis, and React that enables developers to securely expose APIs through proxy endpoints while providing authentication, caching, rate limiting, and real-time analytics.**
-
-Inspired by **AWS API Gateway**, **Kong**, and **Google Apigee**.
-
-</div>
-
----
-
-# 📌 Overview
-
-API Gateway & Analytics Platform is a full-stack developer platform designed to manage, secure, and monitor external APIs.
-
-Instead of exposing APIs directly to clients, this platform generates secure proxy endpoints and API keys. Every request passes through the gateway where it is authenticated, rate-limited, cached, analyzed, and finally forwarded to the original API.
-
-The platform also provides a modern analytics dashboard that helps developers understand traffic, latency, cache performance, blocked requests, and overall API health.
-
----
-
-# ✨ Features
-
-## 🔐 Authentication
-
-* User Registration
-* User Login
-* JWT Authentication
-* Protected Routes
-* Password Encryption using bcrypt
-
----
-
-## 🌐 API Gateway
-
-* Register External APIs
-* Generate Proxy URLs
-* Generate Secure API Keys
-* API Key Validation
-* Reverse Proxy Forwarding
-* Secure API Access
-
----
-
-## 🚦 Rate Limiting
-
-Implemented using **Upstash Redis**
-
-Supports:
-
-* Configurable Request Limits
-* Configurable Time Windows
-* Automatic Blocking
-* Redis-based Distributed Counters
-
-Example:
-
-* 100 Requests
-* Per Minute
-* Per User/API Key
-
----
-
-## 💾 Redis Response Caching
-
-Implemented using **Upstash Redis**
-
-Features:
-
-* Response Caching
-* Configurable TTL
-* Faster Responses
-* Reduced Backend Load
-* Cache Hit Tracking
-
----
-
-## 📊 Analytics Dashboard
-
-Tracks:
-
-* Total Requests
-* Successful Requests
-* Failed Requests
-* Blocked Requests
-* Cache Hits
-* API Calls
-* Cache Hit Ratio
-* Average Latency
-* Request History
-* Status Codes
-* Request Timeline
-* Client IP
-* API Usage Statistics
-
----
-
-# 🏗️ Architecture
-
-```text
-                Client
-                   │
-                   ▼
-        JWT Authentication
-                   │
-                   ▼
-          API Gateway Server
-                   │
-     ┌─────────────┼─────────────┐
-     │             │             │
-     ▼             ▼             ▼
- API Key      Rate Limiter     Cache
-Validation      (Redis)        (Redis)
-     │             │             │
-     └─────────────┼─────────────┘
-                   ▼
-           Reverse Proxy Engine
-                   │
-                   ▼
-           External APIs
-                   │
-                   ▼
-          Analytics Service
-                   │
-                   ▼
-            MongoDB Atlas
-```
-
----
-
-# 🛠️ Tech Stack
-
-## Backend
-
-* Node.js
-* Express.js
-* MongoDB Atlas
-* Mongoose
-* Upstash Redis
-* JWT
-* bcrypt
-* Axios
-
-## Frontend
-
-* React.js
-* Vite
-* Tailwind CSS
-* React Router
-* Axios
-
-## Database
-
-* MongoDB Atlas
-
-## Cache
-
-* Upstash Redis
-
-## Authentication
-
-* JWT
-* bcrypt
-
-## Development Tools
-
-* Git
-* GitHub
-* Postman
-* VS Code
-
----
-
-# 📂 Project Structure
-
-```
-API-Gateway/
-
-├── Backend/
-│
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── routes/
-│   │   ├── middleware/
-│   │   ├── models/
-│   │   ├── services/
-│   │   ├── config/
-│   │   └── utils/
-│
-│   └── package.json
-│
-├── FrontEnd/
-│
-│   ├── src/
-│   │
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── context/
-│   ├── hooks/
-│   └── App.jsx
-│
-└── README.md
-```
-
----
-
-# 📊 Analytics Captured
-
-* Total APIs
-* Total Requests
-* Successful Requests
-* Failed Requests
-* Blocked Requests
-* Cache Hits
-* API Calls
-* Average Latency
-* Cache Hit Ratio
-* Request History
-* Status Codes
-* Client IP
-* Request Timestamp
-
----
-
-# 🔒 Security
-
-* JWT Authentication
-* Password Hashing
-* API Key Authentication
-* Protected Routes
-* Redis Rate Limiting
-* Secure Proxy URLs
-* Input Validation
-
----
-
-# 🚀 Installation
-
-## Clone Repository
+The proxy URL is `https://api.example.com/proxy/{proxyId}`. It forwards `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, and `HEAD`, including extra path segments, query strings, JSON/form/binary request bodies, and non-hop-by-hop request headers. Upstream status codes and safe response headers are preserved.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/API-Gateway-Analytics-Platform.git
+curl "https://api.example.com/proxy/PROXY_ID/v1/items?limit=10" \
+  -H "x-api-key: sk_live_..."
 ```
 
----
+Do not put API keys in a browser address-bar URL: query-string credentials are logged by browsers, servers, and analytics tools. A browser app must send the key in the `x-api-key` header through `fetch`, or use its own backend.
 
-## Backend
+## Security controls
 
-```bash
-cd Backend
-npm install
-npm run dev
-```
+- API keys are generated with cryptographic randomness and only an HMAC hash is stored for newly created or regenerated keys.
+- Public `http`/`https` targets are validated at registration and again at connection time; loopback, private, link-local, and reserved addresses are rejected to reduce SSRF risk.
+- Redirects are not followed, upstream calls time out, and request/response size limits are enforced.
+- Cache entries vary by proxy URL and request method. Only unauthenticated, cookie-free `GET` requests may be cached; configured cache TTL and enable/disable settings are respected.
+- Rate limits are per proxy and client IP. Set `TRUST_PROXY=true` only behind a known reverse proxy, otherwise IP attribution can be forged.
 
----
+## Run locally
 
-## Frontend
+1. Copy [Backend/.env.example](Backend/.env.example) to `Backend/.env` and fill every value. For local testing, public-only upstream validation intentionally rejects `localhost`; deploy a public test API or adapt the policy only in a separate development environment.
+2. Install and start the backend:
 
-```bash
-cd FrontEnd
-npm install
-npm run dev
-```
+   ```bash
+   cd Backend
+   npm install
+   npm test
+   npm run dev
+   ```
 
----
+3. Configure `FrontEnd/.env`:
 
-# 🔑 Environment Variables
+   ```env
+   VITE_API_URL=http://localhost:5000
+   ```
 
-Backend `.env`
+4. Install and start the frontend:
 
-```env
-PORT=5000
+   ```bash
+   cd FrontEnd
+   npm install
+   npm run dev
+   ```
 
-MONGODB_URI=
+## Production launch checklist
 
-JWT_SECRET=
+- Use HTTPS, a managed MongoDB deployment, and Redis with TLS.
+- Put all `.env` values in the host's secret manager; never commit them.
+- Set `BASE_URL` and `VITE_API_URL` to their final HTTPS domains, and set `FRONTEND_ORIGINS` exactly to the frontend origins.
+- Deploy behind a configured reverse proxy/load balancer and set `TRUST_PROXY=true` only if it strips client-provided forwarding headers.
+- Enable database backups, Redis monitoring, uptime checks against `/health`, structured logs, and alerting for 5xx/429 spikes.
+- Run `npm test`, `npm run build` in `FrontEnd`, and a staging smoke test covering API registration, authorized proxy calls, POST forwarding, cache behavior, and rate limiting.
 
-UPSTASH_REDIS_REST_URL=
+## Current boundaries
 
-UPSTASH_REDIS_REST_TOKEN=
-```
-
----
-
-# 🎯 Future Improvements
-
-* Graph-based Analytics
-* API Versioning
-* Webhooks
-* API Usage Billing
-* Team Collaboration
-* Role-Based Access Control (RBAC)
-* API Documentation Generator
-* Docker Support
-* Kubernetes Deployment
-* CI/CD Pipeline
-* Email Notifications
-* Monitoring & Alerts
-
----
-
-# 💡 Learning Outcomes
-
-This project demonstrates practical experience with:
-
-* Backend Architecture
-* REST API Design
-* Reverse Proxy Implementation
-* JWT Authentication
-* Redis Caching
-* Distributed Rate Limiting
-* MongoDB Data Modeling
-* API Security
-* Analytics Systems
-* React Dashboard Development
-* Full-Stack Application Development
-
----
-
-# 👨‍💻 Author
-
-**Umesh Jhurke**
-
-Computer Engineering (Artificial Intelligence & Machine Learning)
-
-Full Stack Developer | Backend Developer | BI Analytics Enthusiast
-
----
-
-⭐ If you found this project helpful, consider giving it a star.
+This is a secure first-release gateway, not a complete API-management product. Before offering paid or high-volume multi-tenant service, add usage quotas/billing, audit logs, account recovery/email verification, key scopes/rotation history, custom domains, WebSocket/streaming policy, background analytics aggregation, load testing, and an independent security review.

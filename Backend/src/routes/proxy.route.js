@@ -3,6 +3,7 @@ import { handleProxyRequest } from "../controllers/proxy.controller.js";
 
 const router = express.Router();
 
-router.get('/:proxyId', handleProxyRequest);
+router.all('/:proxyId', handleProxyRequest);
+router.all('/:proxyId/*path', handleProxyRequest);
 
 export default router;

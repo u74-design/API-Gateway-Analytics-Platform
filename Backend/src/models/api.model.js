@@ -11,16 +11,19 @@ const ApiSchema = new mongoose.Schema(
         targetUrl: {
             type: String,
             required: true,
+            maxlength: 2048,
         },
 
         rateLimit: {
             type: Number,
-            required: true
+            required: true,
+            min: 1,
+            max: 100000
         },
 
         window: {
             type: String,
-            default: "1m"
+            default: "60s"
         },
         cacheEnabled: {
             type: Boolean,
@@ -30,6 +33,8 @@ const ApiSchema = new mongoose.Schema(
         cacheTTL: {
             type: Number,
             default: 300,
+            min: 1,
+            max: 86400
         },
         proxyId: {
             type: String,
@@ -45,8 +50,14 @@ const ApiSchema = new mongoose.Schema(
 
         apiKey: {
             type: String,
-            required: true,
-            unique: true
+            select: false
+        },
+
+        apiKeyHash: {
+            type: String,
+            unique: true,
+            sparse: true,
+            select: false
         }
 
     },

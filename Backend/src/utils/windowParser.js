@@ -1,20 +1,12 @@
-const parseWindow = (window) => {
-    switch (window) {
-        case "1m":
-            return 60;
+const parseWindow = (value) => {
+    const match = String(value).trim().match(/^(\d+)(s|m|h|d)?$/i);
+    if (!match) return null;
 
-        case "5m":
-            return 300;
-
-        case "1h":
-            return 3600;
-
-        case "1d":
-            return 86400;
-
-        default:
-            return 60;
-    }
+    const amount = Number(match[1]);
+    const unit = (match[2] || "s").toLowerCase();
+    const multiplier = { s: 1, m: 60, h: 3600, d: 86400 }[unit];
+    const seconds = amount * multiplier;
+    return Number.isSafeInteger(seconds) && seconds >= 1 && seconds <= 86400 ? seconds : null;
 };
 
 export default parseWindow;

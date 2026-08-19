@@ -48,6 +48,9 @@ const AnalyticsSchema = new mongoose.Schema(
     }
 );
 
+AnalyticsSchema.index({ owner: 1, createdAt: -1 });
+AnalyticsSchema.index({ apiId: 1, createdAt: -1 });
+
 const Analytics = mongoose.model("Analytics", AnalyticsSchema);
 
 export default Analytics;
